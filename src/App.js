@@ -3,7 +3,6 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import HeaderComponent from './components/HeaderComponent';
-import FooterComponent from './components/FooterComponent';
 import BookFlight from './components/BookFlight';
 
 function App() {
