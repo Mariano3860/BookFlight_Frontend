@@ -15,7 +15,6 @@ function App() {
                           <Route path = "/" component = {BookFlight}></Route>
                     </Switch>
                 </div>
-              <FooterComponent />
         </Router>
     </div>
     

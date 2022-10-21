@@ -68,10 +68,12 @@ class BookFlight extends Component {
         const handleIsShown = () =>{
               this.setState({isShown: true})
         }
-
         const handleIsHide = () =>{
                       this.setState({isShown: false})
         }
+
+
+
         return (
             <div>
                 <br></br>
@@ -155,86 +157,52 @@ class BookFlight extends Component {
                               </div>
                             </div>
 
-                              <div className="form-group">
-                              <label className="col-md-4 control-label">Department / Office</label>
-                                <div className="col-md-4 selectContainer">
+                            <div className="form-group">
+                              <label className="col-md-4 control-label">NIF</label>
+                              <div className="col-md-4 inputGroupContainer">
+                                <div className="input-group">
+                                  <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
+                                  <input  name="nif" placeholder="NIF" className="form-control"  type="text"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-group">
+                              <label className="col-md-4 control-label">Nationality</label>
+                              <div className="col-md-4 inputGroupContainer">
+                                <div className="input-group">
+                                  <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
+                                  <input  name="nationality" placeholder="Nationality" className="form-control"  type="text"/>
+                                </div>
+                              </div>
+                            </div>
+                             <div className="form-group">
+                              <label className="col-md-4 control-label">Age / Office</label>
+                              <div className="col-md-4 selectContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
-                                <select name="department" className="form-control selectpicker">
-                                  <option value="">Select your Department/Office</option>
-                                  <option>Department of Engineering</option>
-                                  <option>Department of Agriculture</option>
-                                  <option >Accounting Office</option>
-                                  <option >Tresurer's Office</option>
-                                  <option >MPDC</option>
-                                  <option >MCTC</option>
-                                  <option >MCR</option>
-                                  <option >Mayor's Office</option>
-                                  <option >Tourism Office</option>
-                                </select>
-                              </div>
-                            </div>
-                            </div>
-
-                            <div className="form-group">
-                              <label className="col-md-4 control-label">Username</label>
-                              <div className="col-md-4 inputGroupContainer">
-                              <div className="input-group">
-                              <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input  name="user_name" placeholder="Username" className="form-control"  type="text"/>
+                                    <select name="age" className="form-control selectpicker">
+                                      <option value=">9">+9</option>
+                                      <option value="<2">Less than 2</option>
+                                      <option value=">2 and <9">Between 2 and 9</option>
+                                    </select>
                                 </div>
                               </div>
-                            </div>
-
+                             </div>
                             <div className="form-group">
-                              <label className="col-md-4 control-label" >Password</label>
+                              <label className="col-md-4 control-label" >Luggage</label>
                                 <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                               <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input name="user_password" placeholder="Password" className="form-control"  type="password"/>
+                              <input name="Luggage" placeholder="Luggage" className="form-control" type="number"/>
                                 </div>
                               </div>
                             </div>
-
-                            <div className="form-group">
-                              <label className="col-md-4 control-label" >Confirm Password</label>
-                                <div className="col-md-4 inputGroupContainer">
-                                <div className="input-group">
-                              <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input name="confirm_password" placeholder="Confirm Password" className="form-control"  type="password"/>
-                                </div>
-                              </div>
-                            </div>
-
-                                  <div className="form-group">
-                              <label className="col-md-4 control-label">E-Mail</label>
-                                <div className="col-md-4 inputGroupContainer">
-                                <div className="input-group">
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-envelope"></i></span>
-                              <input name="email" placeholder="E-Mail Address" className="form-control"  type="text"/>
-                                </div>
-                              </div>
-                            </div>
-
-
-                            <div className="form-group">
-                              <label className="col-md-4 control-label">Contact No.</label>
-                                <div className="col-md-4 inputGroupContainer">
-                                <div className="input-group">
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
-                              <input name="contact_no" placeholder="(639)" className="form-control" type="text"/>
-                                </div>
-                              </div>
-                            </div>
-
-
-                            <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Success!.</div>
-
                         <div className="form-group">
                               <label className="col-md-4 control-label"></label>
-                              <div className="col-md-4"><br/>
-                                <button type="submit" className="btn btn-warning" onClick={() => handleIsHide()}>SUBMIT <span className="glyphicon glyphicon-send"></span></button>
-                              </div>
+                                  <div className="col-md-4"><br/>
+                                    <button type="submit" className="btn btn-warning" onClick={() => handleIsHide()}>Finalize <span className="glyphicon glyphicon-send"></span></button>
+                                    <button type="submit" className="btn btn-success" >Add Passenger <span className="glyphicon glyphicon-send"></span></button>
+                                  </div>
                             </div>
 
                             </fieldset>
