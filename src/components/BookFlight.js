@@ -1,75 +1,60 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
 class BookFlight extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
-
         }
     }
-    // step 3
-    /*componentDidMount(){
-
-        // step 4
-        if(this.state.id === '_add'){
-            return
-        }else{
-            EmployeeService.getEmployeeById(this.state.id).then( (res) =>{
-                let employee = res.data;
-                this.setState({firstName: employee.firstName,
-                    lastName: employee.lastName,
-                    emailId : employee.emailId
-                });
-            });
-        }        
-    }
-    saveOrUpdateEmployee = (e) => {
-        e.preventDefault();
-        let employee = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId};
-        console.log('employee => ' + JSON.stringify(employee));
-
-        // step 5
-        if(this.state.id === '_add'){
-            EmployeeService.createEmployee(employee).then(res =>{
-                this.props.history.push('/employees');
-            });
-        }else{
-            EmployeeService.updateEmployee(employee, this.state.id).then( res => {
-                this.props.history.push('/employees');
-            });
-        }
-    }
-    
-    changeFirstNameHandler= (event) => {
-        this.setState({firstName: event.target.value});
+    state = {
+        price: 0
     }
 
-    changeLastNameHandler= (event) => {
-        this.setState({lastName: event.target.value});
-    }
+    getPrice = event => {
+        event.preventDefault();
 
-    changeEmailHandler= (event) => {
-        this.setState({emailId: event.target.value});
-    }
+        var BookFlight = {
+            origen: this.state.selectedTo,
+            destino: this.state.selectedFrom,
+            roundTrip: this.state.roundTrip,
+        };
 
-    cancel(){
-        this.props.history.push('/employees');
-    }*/
+        axios.post(`https://localhost:8080/api/BookFlight/price`, { BookFlight })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ price: event.target.value });
+            })
+    }
 
 
     render() {
+        const isOneWay = true;
         const handleChangeFrom = (e) => {
               this.setState({selectedFrom: e.target.value})
+            this.getPrice();
         }
         const handleChangeTo = (e) => {
               this.setState({selectedTo: e.target.value})
+            this.getPrice();
         }
+
         const handleIsShown = () =>{
               this.setState({isShown: true})
         }
         const handleIsHide = () =>{
                       this.setState({isShown: false})
+        }
+        const toggleTravel = () =>{
+            if(isOneWay){
+                this.setState({isOneWay: false});
+                this.setState({roundTrip : true});
+            }else{
+                this.setState({isOneWay: true});
+                this.setState({roundTrip : false});
+            }
+            this.getPrice();
         }
 
 
@@ -81,13 +66,13 @@ class BookFlight extends Component {
                         <div className = "row">
                             <div className = "card col-md-6 offset-md-3 offset-md-3">
                                 <form action="#">
-                                    <div className="form-group border-bottom d-flex align-items-center justify-content-between flex-wrap">
+                                    <div onChange={() => toggleTravel()} className="form-group border-bottom d-flex align-items-center justify-content-between flex-wrap">
                                         <label className="option my-sm-0 my-2">
-                                            <input type="radio" name="radio" />Round Trip
+                                            <input value="round_trip" ref="round_trip" type="radio" name="radio" />Round Trip
                                             <span className="checkmark"></span>
                                         </label>
                                         <label className="option my-sm-0 my-2">
-                                            <input type="radio" name="radio" checked/>One Way
+                                            <input value="one_way" ref="one_way" type="radio" name="radio" checked/>One Way
                                             <span className="checkmark"></span>
                                         </label>
                                     </div>
@@ -96,7 +81,7 @@ class BookFlight extends Component {
 
                                             <div className="label" id="from" value={this.state.selectedFrom}>
                                                 <select onChange={(e) => handleChangeFrom(e)}>
-                                                    <option value="sevilla">Sevilla</option>
+                                                    <option ref="origen" value="sevilla">Sevilla</option>
                                                 </select>
                                             </div>
                                             <span className="fas fa-dot-circle text-muted"></span>
