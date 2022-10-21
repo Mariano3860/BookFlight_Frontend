@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {useEffect, useState, createRef, useRef, lazy, useContext, Component} from "react";
 import axios from 'axios';
 
 class BookFlight extends Component {
@@ -6,11 +6,19 @@ class BookFlight extends Component {
         super(props)
         this.state = {
         price: 0,
-        origen: "sevilla",
-        destino: "madrid",
-        roundTrip: true
+        origen: "",
+        destino: "",
+        roundTrip: true,
+        numPass: 0,
+        id : 0,
+        firstName : "",
+        lastName : "",
+        nationality : "",
+        age : "",
+        luggage : 0,
         }
     }
+
 
     getPrice = () => {
         //event.preventDefault();
@@ -27,7 +35,7 @@ class BookFlight extends Component {
         axios({method: 'post',
                   url: 'http://localhost:8080/api/BookFlight/price',
                   timeout: 4000,    // 4 seconds timeout
-                  data: bookFlight
+                  data: JSON.stringify(bookFlight)
               })
             .then(res => {
                 console.log(res);
@@ -36,9 +44,32 @@ class BookFlight extends Component {
             })
     }
 
+    addPassenger = () => {
+        let passenger = {
+            id: this.state.id,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            nationality : this.state.nationality,
+            age: this.state.age,
+            luggage : this.state.luggage,
+            bookId: 1
+        };
+        console.log(passenger.id + passenger.roundTrip + passenger.age + passenger.bookId)
+        axios({method: 'post',
+            url: 'http://localhost:8080/api/Passenger/addPassenger',
+            timeout: 4000,    // 4 seconds timeout
+            data: JSON.stringify(passenger)
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ numPass: this.state.numPass + 1 });
+            })
+    }
 
     render() {
         const isOneWay = true;
+
         const handleChangeFrom = (e) => {
               this.setState({selectedFrom: e.target.value})
             this.getPrice();
@@ -46,6 +77,27 @@ class BookFlight extends Component {
         const handleChangeTo = (e) => {
               this.setState({selectedTo: e.target.value})
             this.getPrice();
+        }
+
+        const handlePName = (e) => {
+            this.setState({firstName: e.target.value})
+        }
+        const handlePLast = (e) => {
+            this.setState({lastName: e.target.value})
+        }
+
+        const handlePAge = (e) => {
+            this.setState({age: e.target.value})
+        }
+
+        const handlePNif = (e) => {
+            this.setState({id: e.target.value})
+        }
+        const handlePLuggage = (e) => {
+            this.setState({luggage: e.target.value})
+        }
+        const handlePNationality = (e) => {
+            this.setState({nationality: e.target.value})
         }
 
         const handleIsShown = () =>{
@@ -64,8 +116,6 @@ class BookFlight extends Component {
             }
             this.getPrice();
         }
-
-
 
         return (
             <div>
@@ -135,7 +185,7 @@ class BookFlight extends Component {
                               <div className="col-md-4 inputGroupContainer">
                               <div className="input-group">
                               <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input  name="first_name" placeholder="First Name" className="form-control"  type="text"/>
+                              <input ref={this.state.firstName} onChange={(e) => handlePName(e)} name="first_name" placeholder="First Name" className="form-control"  type="text"/>
                                 </div>
                               </div>
                             </div>
@@ -145,7 +195,7 @@ class BookFlight extends Component {
                                 <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                               <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input name="last_name" placeholder="Last Name" className="form-control"  type="text"/>
+                              <input ref={this.state.lastName} onChange={(e) => handlePLast(e)} name="last_name" placeholder="Last Name" className="form-control"  type="text"/>
                                 </div>
                               </div>
                             </div>
@@ -155,7 +205,7 @@ class BookFlight extends Component {
                               <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                   <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                  <input  name="nif" placeholder="NIF" className="form-control"  type="text"/>
+                                  <input  ref={this.state.id} onChange={(e) => handlePNif(e)} name="nif" placeholder="NIF" className="form-control"  type="text"/>
                                 </div>
                               </div>
                             </div>
@@ -164,7 +214,7 @@ class BookFlight extends Component {
                               <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                   <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                  <input  name="nationality" placeholder="Nationality" className="form-control"  type="text"/>
+                                  <input ref={this.state.nationality} onChange={(e) => handlePNationality(e)} name="nationality" placeholder="Nationality" className="form-control"  type="text"/>
                                 </div>
                               </div>
                             </div>
@@ -173,7 +223,7 @@ class BookFlight extends Component {
                               <div className="col-md-4 selectContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
-                                    <select name="age" className="form-control selectpicker">
+                                    <select ref={this.state.age} onChange={(e) => handlePAge(e)} name="age" className="form-control selectpicker">
                                       <option value=">9">+9</option>
                                       <option value="<2">Less than 2</option>
                                       <option value=">2 and <9">Between 2 and 9</option>
@@ -186,7 +236,7 @@ class BookFlight extends Component {
                                 <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                               <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                              <input name="Luggage" placeholder="Luggage" className="form-control" type="number"/>
+                              <input ref={this.state.luggage} onChange={(e) => handlePLuggage(e)} name="Luggage" placeholder="Luggage" className="form-control" type="number"/>
                                 </div>
                               </div>
                             </div>
@@ -194,7 +244,7 @@ class BookFlight extends Component {
                               <label className="col-md-4 control-label"></label>
                                   <div className="col-md-4"><br/>
                                     <button type="submit" className="btn btn-warning" onClick={() => handleIsHide()}>Finalize <span className="glyphicon glyphicon-send"></span></button>
-                                    <button type="submit" className="btn btn-success" >Add Passenger <span className="glyphicon glyphicon-send"></span></button>
+                                    <button type="submit" className="btn btn-success" onClick={() => this.addPassenger()}>Add Passenger <span className="glyphicon glyphicon-send"></span></button>
                                   </div>
                             </div>
 
