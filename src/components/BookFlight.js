@@ -5,26 +5,34 @@ class BookFlight extends Component {
     constructor(props) {
         super(props)
         this.state = {
+        price: 0,
+        origen: "sevilla",
+        destino: "madrid",
+        roundTrip: true
         }
     }
-    state = {
-        price: 0
-    }
 
-    getPrice = event => {
-        event.preventDefault();
+    getPrice = () => {
+        //event.preventDefault();
 
-        var BookFlight = {
-            origen: this.state.selectedTo,
-            destino: this.state.selectedFrom,
+        let bookFlight = {
+            origen: this.state.origen,
+            destino: this.state.destino,
             roundTrip: this.state.roundTrip,
+            goDate : null,
+            bakcDate: null,
+            price : null
         };
 
-        axios.post(`https://localhost:8080/api/BookFlight/price`, { BookFlight })
+        axios({method: 'post',
+                  url: 'http://localhost:8080/api/BookFlight/price',
+                  timeout: 4000,    // 4 seconds timeout
+                  data: bookFlight
+              })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                this.setState({ price: event.target.value });
+                this.setState({ price: res.data });
             })
     }
 
@@ -120,7 +128,7 @@ class BookFlight extends Component {
                                 <form className="well form-horizontal" action=" " method="post"  id="contact_form">
                             <fieldset>
 
-                           <legend><center><h2><b>Registration Form</b></h2></center></legend><br/>
+                           <legend><center><h2><b>Total amount: {this.state.price}</b></h2></center></legend><br/>
 
                             <div className="form-group">
                               <label className="col-md-4 control-label">First Name</label>
